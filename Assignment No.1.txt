@@ -35,4 +35,4 @@ select * from gym_members where city='Mumbai' and age>20;
 
 select * from gym_members where (expiration_date-joining_date) < 365;
 
-select * from Gym_members where MONTHS_BETWEEN(expiration_date,joining_date) <=12;
+select * from gym_members where MONTHS_BETWEEN(expiration_date,joining_date) <=12;
