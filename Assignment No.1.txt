@@ -26,6 +26,12 @@ insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,heigh
 insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,height,weight)values
 (sq_name.nextval,'Abhishek',23,'01-Jan-2022','01-Aug-2023',20000,'Pune',165,55);
 
+insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,height,weight)values
+(sq_name.nextval,'Krushna',22,'01-Jan-2022','01-Apr-2023',3000,'Mumbai',172,63);
+
+insert into gym_members(id,name,age,joining_date,expiration_date,cost,city,height,weight)values
+(sq_name.nextval,'Viraj',22,'01-Jan-2023','01-Feb-2023',3000,'Pune',180,90);
+
 select * from gym_members where cost>8000;
 
 select * from gym_members where city='Pune';
