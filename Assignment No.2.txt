@@ -1,0 +1,56 @@
+
+create table bookings(
+	id number(5) primary key,
+	name varchar2(20) not null,
+	room_no number(4) not null unique,
+	check_in_date date not null,
+	check_out_date date not null,
+	discount number(9) not null,
+	Total_price_for_1_day number(8) not null,
+	country varchar2(30) default 'India' not null,
+	created_at date default sysdate);
+
+
+create sequence sq_book
+start with 1
+increment by 1;
+
+
+
+insert into bookings(id,name,room_no,check_in_date,check_out_date,discount,total_price_for_1_day,country)values
+(sq_book.nextval,'sham',101,'01-Feb-2023','02-Feb-2023',10,2000,'India');
+
+
+insert into bookings(id,name,room_no,check_in_date,check_out_date,discount,total_price_for_1_day,country)values
+(sq_book.nextval,'raju',102,'16-Jun-2023','19-Jun-2023',10,4000,'Paris');
+
+
+insert into bookings(id,name,room_no,check_in_date,check_out_date,discount,total_price_for_1_day,country)values
+(sq_book.nextval,'virat',118,'23-Apr-2023','25-Apr-2023',10,3000,'India');
+
+
+insert into bookings(id,name,room_no,check_in_date,check_out_date,discount,total_price_for_1_day,country)values
+(sq_book.nextval,'Rohit',445,'30-Oct-2023','01-Nov-2023',05,10000,'Dubai');
+
+
+insert into bookings(id,name,room_no,check_in_date,check_out_date,discount,total_price_for_1_day,country)values
+(sq_book.nextval,'Rahul',302,'13-Jun-2023','14-Jun-2023',05,10000,'Dubai');
+
+
+
+insert into bookings(id,name,room_no,check_in_date,check_out_date,discount,total_price_for_1_day,country)values
+(sq_book.nextval,'Rishabh',404,'19-Jan-2023','21-Jan-2023',20,10000,'India');
+
+
+select count(*) from bookings group by country;
+
+select * from(select max(country) from bookings group by country order by count(*)desc)where rownum=1;
+
+
+select * from bookings where extract(MONTH from check_in_date)=6;
+
+
+select * from bookings where  check_out_date-check_in_date>=2;
+
+select name,((check_out_date-check_in_date)*total_price_for_1_day)*discount/100 as payment from bookings;
+
