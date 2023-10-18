@@ -1,0 +1,161 @@
+create table departments(
+	id number(10) primary key,
+	name varchar2(20) not null unique,
+	created_at date default sysdate);
+
+create sequence dept_seq
+start with 1
+increment by 1;
+
+insert into departments(id,name) values (dept_seq.nextval,'HR');
+
+
+create table employees(
+id number(10) primary key,
+name varchar2(30) not null,
+city varchar2(30) not null,
+email varchar2(30) not null unique,
+salary number(10) not null,
+did number(10),
+foreign key(did) references departments(id),
+created_at date default sysdate);
+
+create sequence emp_seq
+start with 1
+increment by 1;
+
+insert into employees(id,name,city,email,salary,did) values (emp_seq.nextval,'soham','soham@gmail.com',35000,2);
+
+
+select d.id,d.name,e.did,e.name from departments d INNER JOIN employees e ON d.id=e.did;
+
+
+create table bank_details(
+id number(10) primary key,
+account number(16) unique not null,
+ifsc varchar2(20) not null,
+branch varchar2(30) not null,
+eid number(10),
+foreign key(eid) references employees(id),
+created_at date default sysdate);
+
+
+
+create sequence bank_seq
+start with 1
+increment by 1;
+
+insert into bank_details(id,account,ifsc,branch,eid) values (bank_seq.nextval,4537282324,'SBIN0001673','kharadi',1);
+
+5 user 7 posts
+
+
+create table users(
+id number(10) primary key,
+name varchar2(30) not null,
+username varchar2(30) not null unique,
+password varchar2(30) not null,
+bio varchar2(30) ,
+link varchar2(30),
+type varchar2(30) default 'public' not null,
+created_at date default sysdate);
+
+
+create sequence user_seq
+start with 1
+increment by 1;
+
+
+insert into users(id,name,username,password,bio,link,type) values (user_seq.nextval,'soham','soham888','soham@123','student','shdued.com','public');
+
+insert into users(id,name,username,password,bio,link,type) values (user_seq.nextval,'abhishek','abhi07','abhi@123','student','dhgfd.com','public');
+
+insert into users(id,name,username,password,bio,link) values (user_seq.nextval,'gaurav','gaurav3g','gaurav@123','student','dhgfd.com');
+
+insert into users(id,name,username,password,bio,link) values (user_seq.nextval,'rameshwar','ramu0933','ramu@123','student','dhgfd.com');
+
+insert into users(id,name,username,password,bio,link) values (user_seq.nextval,'krushna','krushnam3443','krushna@123','student','dkkrs.com');
+
+
+create table posts(
+id number(10) primary key,
+caption varchar2(30),
+media varchar2(30) not null,
+type varchar2(30) not null,
+user_id number(10) ,
+foreign key(user_id) references users(id),
+created_at date default sysdate);
+
+
+create sequence post_seq
+start with 1
+increment by 1;
+
+
+insert into posts(id,caption,media,type,user_id) values (post_seq.nextval,'nature','img','jpg',1);
+
+create table comments(
+id number(10) primary key,
+user_id number(10),
+foreign key(user_id) references users(id),
+post_id number(10),
+foreign key(post_id) references posts(id),
+message varchar2(30),
+created_at date default sysdate);
+
+
+create sequence comnt_seq
+start with 1
+increment by 1;
+
+insert into comments(id,user_id,post_id,message) values (comnt_seq.nextval,5,7,'cute dogs');
+
+insert into comments(id,user_id,post_id,message) values (comnt_seq.nextval,1,1,'great pictures');
+
+select * from
+users s , posts p
+where u.id=p.user_id
+and u.username='soham888';
+
+---------1--------------
+select c.message,u.name
+  2  from users u, posts p, comments c
+  3  where c.post_id=p.id
+  4  and c.user_id=u.id
+  5  and u.username=('soham888');
+
+------------2---------------------
+
+select u.name,p.id from users u, posts p, comments c
+where c.user_id=u.id
+and c.post_id=p.id
+and trunc(p.created_at)='16-Oct-2023';
+
+
+---------------3--------------
+
+select u.username from users u
+where trunc(u.created_at)='16-Oct-2023';
+
+----------4-----------------
+
+
+select p.caption from posts p, users u
+where p.user_id=u.id
+and u.name='soham';
+
+-----------5-------------------
+
+select p.caption,c.message,p.user_id,c.user_id from
+users u, posts p,comments c
+where u.id=p.user_id
+and p.id=c.post_id
+and p.user_id=c.user_id
+and u.name='soham';
+
+
+
+
+
+
+

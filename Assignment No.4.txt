@@ -1,0 +1,433 @@
+set operation
+
+
+--------------PL/SQL---------------
+
+declare
+
+num1 number(2) := &num1;
+num2 number(2) :=&num2;
+name varchar2(20) :='&name';
+result number(2);
+
+begin
+
+result := num1 + num2;
+
+dbms_output.put_line('the name is'||name);
+dbms_output.put_line('the result is'||result);
+
+end;
+/
+
+
+---------------------------------------
+
+
+declare
+
+num1 number(2) := &num1;
+num2 number(2) :=&num2;
+add number(10);
+sub number(10);
+mul number(10);
+div number(10);
+
+begin
+
+add := num1 + num2;
+
+sub := num1 - num2;
+
+mul := num1 * num2;
+
+div := num1 / num2;
+
+
+dbms_output.put_line('Addition is : '||add);
+dbms_output.put_line('Subtraction is : '||round(sub));
+dbms_output.put_line('Multiplication is : '||mul);
+dbms_output.put_line('Division is : '||div);
+
+end;
+/
+
+---------------------------------------------------
+
+
+select data from table and store in variables
+
+
+declare
+vname employees.name%type;
+vcity employees.city%type;
+vemail employees.email%type;
+vannual_sal employees.salary%type;
+
+begin
+
+select name , city,email,salary into vname,vcity,vemail,vannual_sal from employees where id =2 ;
+
+vannual_sal := vannual_sal*12;
+
+dbms_output.put_line('The name is : '||vname);
+dbms_output.put_line('The city is : '||vcity);
+dbms_output.put_line('The email is : '||vemail);
+dbms_output.put_line('The salary is : '||vannual_sal);
+
+end;
+/
+
+------------------Conditional Statement----------------
+
+declare
+num number(2):=&num;
+
+begin 
+
+if(num>20) then
+	dbms_output.put_line('Num is greater than 20');
+
+end if;
+
+end;
+
+/
+
+----------------------------------------------------
+
+declare
+
+percentage number(10) :=&percentage;
+
+begin
+
+if(percentage>=85) then
+	dbms_output.put_line('O grade');
+elsif(percentage>=70) then
+	dbms_output.put_line('A grade');
+elsif(percentage>=55) then
+	dbms_output.put_line('B grade');
+elsif(percentage>=40) then
+	dbms_output.put_line('C grade');
+else
+	dbms_output.put_line('Fail');
+
+end if;
+
+end;
+
+/
+
+---------------------------------------------------
+ask the user for salary if salary is > 1L then he has to pay 25% tax of his salary
+salary>60 / 15% tax
+salary > 40 / 8% tax
+
+otherwise no tax
+
+
+declare
+
+salary number(30):=&salary;
+tax number(30):=0;
+
+begin 
+
+
+if( salary>100000) then
+	tax:=(salary*25)/100;
+	dbms_output.put_line('You have to pay tax in rs :'||tax);
+elsif(salary>60000 and salary<100000) then
+	tax:=(salary*15)/100;
+	dbms_output.put_line('You have to pay tax in rs :'||tax);
+elsif(salary>40000 and salary <60000) then
+	tax:=(salary*8)/100;
+	dbms_output.put_line('You have to pay tax in rs :'||tax);
+else
+	dbms_output.put_line('You donot have to pay tax');
+end if;
+end;
+/
+
+--------------------------------Looping statment---------------------
+
+1. Basic Loop
+
+declare 
+i number(2):=1;
+
+begin
+
+	loop
+		dbms_output.put_line('hello : '||i);
+		i:=i+1;
+		if(i>10) then
+			exit;
+		end if;
+	end loop;
+end;
+/
+
+
+---------------------
+
+declare 
+i number(2):=1;
+
+begin
+
+	loop
+		if(i<=10) then
+			dbms_output.put_line('hello : '||i);
+			i:=i+1;
+		else
+			exit;
+		end if;
+	end loop;
+end;
+/
+
+----------------------------------------
+
+declare 
+i number(2):=1;
+n number(10):=&n;
+result number(10):=0;
+begin
+
+	loop
+		if(i<=10) then
+			result:=n*i;
+			dbms_output.put_line(n||' * '||i||' = '|| result);
+			i:=i+1;
+		else
+			exit;
+		end if;
+	end loop;
+end;
+/
+--------------------------------------------
+
+2. While loop
+
+declare 
+i number(2):=1;
+
+begin
+
+	while(i<=10) loop
+		dbms_output.put_line('hello : '||i);
+		i:=i+1;
+	end loop;
+end;
+/
+
+----------------------------------------
+
+3. For Loop
+
+declare
+i number(2);
+
+begin
+ 
+	for i in 1..10 loop
+	   	dbms_output.put_line('hello : ' || i);
+	end loop;
+end;
+/
+
+--------------Arrays-----------------------
+
+declare  
+
+	type strFiveEles is varray(5) of  varchar2(20);
+	avengers strFiveEles;
+
+begin 
+
+	avengers:=strFiveEles('Thor','Iron-man','Hulk','captain','dr.strange');
+	dbms_output.put_line(avengers(1));
+
+end;
+/
+
+------------------------------------------------
+
+sum of all numbers in array
+
+declare  
+
+	type intFiveEles is varray(5) of  number(20);
+	num intFiveEles;
+	sum1 number(20):=0;
+	i number(5);
+
+begin 
+
+	num:=intFiveEles(10,20,30,40,50);
+	for i in 1..num.count loop
+		sum1:=sum1+num(i);
+	end loop;
+	
+	dbms_output.put_line('sum : '||sum1);
+
+end;
+/
+
+--------------Implicit cursor-------------------------
+
+CURSOR - context pointer
+
+begin
+update employees
+set city='Hyderabad'
+where id = 10;
+
+if sql%notfound = true then
+	dbms_output.put_line('the record you are trying to update was not found');
+else
+	dbms_output.put_line(sql%rowcount||' rows got updated');
+end if;
+
+--dbms_output.put_line(sys.diutil.bool_to_int(sql%found));
+--dbms_output.put_line(sys.diutil.bool_to_int(sql%notfound));
+--dbms_output.put_line(sql%rowcount);
+
+
+--delete from employees
+
+--sql%found
+
+end;
+/
+-------------------Explicit cursor--------------------
+
+declare
+cursor c_users is select id,name,username,bio from users;
+v_id users.id%type;
+v_name users.name%type;
+v_username users.username%type;
+v_bio users.bio%type;
+
+begin
+
+open c_users;
+
+loop
+
+	fetch c_users into v_id,v_name,v_username,v_bio;
+	exit when c_users%notfound = true;
+	dbms_output.put_line(v_name||' '||v_bio);
+end loop;
+
+close c_users;
+end;
+/
+
+-----------------Procedure-------------------------------
+
+create or replace procedure getSqr(n in number)
+as
+begin
+
+dbms_output.put_line(n*n);
+end;
+/
+
+
+---------------------------------------------------
+
+create or replace procedure getEmp(eid in number,ename out employees.name%type , esalary out employees.salary%type)
+as
+begin
+
+select name , salary into ename,esalary from employees where id = eid;
+end;
+/
+
+
+declare
+eid employees.id%type := &eid;
+ename employees.name%type := &ename;
+esalary employees.salary%type :=&esalary
+
+begin
+getEmp(2);
+dbms_output_put_line(ename||' '||esalary);
+end;
+/
+----------------------Funaction----------------
+
+create or replace function getData(ename in varchar2) return employees.email%type
+is
+e_email employees.email%type;
+begin
+
+select email into e_email from employees where name=ename;
+
+return e_email;
+
+end;
+/ 
+
+declare
+    name varchar2(30);
+begin
+    name:=getData('soham');
+    dbms_output.put_line(name);
+ end;
+ /
+
+---------------------------------------------------------------
+
+create or replace function getSal(ename in varchar2) return employees.salary%type
+is
+e_sal employees.salary%type;
+begin
+
+select salary into e_sal from employees where name=ename;
+e_sal:=(e_sal*10)/100;
+return e_sal;
+
+end;
+/ 
+
+
+declare
+    name varchar2(30);
+begin
+    name:=getSal('soham');
+    dbms_output.put_line(name);
+ end;
+ /
+-----------------------------------------------------
+------------------------Triggers----------------------
+
+create or replace trigger displayUpdateMessage
+after update on employees
+for each row
+begin
+
+dbms_output.put_line('someone updated employees table');
+dbms_output.put_line(:old.name||' '||:old.city);
+dbms_output.put_line(:new.name||' '||:new.city);
+
+end;
+/
+
+=======================================================
+
+create or replace trigger displayUpdateMessage
+after update on employees
+for each row
+begin
+
+dbms_output.put_line('someone updated employees table');
+dbms_output.put_line(:old.name||' '||:old.city);
+dbms_output.put_line(:new.name||' '||:new.city);
+dbms_output.put_line((:old.salary-:new-salary));
+
+end;
+/
